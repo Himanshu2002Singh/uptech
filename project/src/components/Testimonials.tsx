@@ -3,31 +3,29 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-
-
-// const testimonials = [
-//   {
-//     name: "Avinash Kr",
-//     role: "Co-Founder at xyz",
-//     image: "/assets/img/avinash.jpg",
-//     quote:
-//       "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
-//   },
-//   {
-//     name: "Bharat Kunal",
-//     role: "Manager at xyz",
-//     image: "/assets/img/bharat.jpg",
-//     quote:
-//       "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
-//   },
-//   {
-//     name: "Prabhakar D",
-//     role: "Founder / CEO at xyz",
-//     image: "/assets/img/prabhakar.jpg",
-//     quote:
-//       "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
-//   },
-// ];
+const testimonials = [
+  {
+    name: "Avinash Kr",
+    role: "Co-Founder at xyz",
+    image: "/assets/img/avinash.jpg",
+    quote:
+      "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
+  },
+  {
+    name: "Bharat Kunal",
+    role: "Manager at xyz",
+    image: "/assets/img/bharat.jpg",
+    quote:
+      "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
+  },
+  {
+    name: "Prabhakar D",
+    role: "Founder / CEO at xyz",
+    image: "/assets/img/prabhakar.jpg",
+    quote:
+      "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
+  },
+];
 
 const Testimonials: React.FC = () => {
   const settings = {
