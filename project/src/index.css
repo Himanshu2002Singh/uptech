@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+
+/* Add this to your global CSS */
+.highlight-course {
+  box-shadow: 0 0 0 4px #f97316aa; /* Tailwind's orange-500 with alpha */
+  transition: box-shadow 0.3s ease-in-out;
+}
+.highlight-course:hover {
+  box-shadow: 0 0 0 4px #f97316; /* Tailwind's orange-500 */
+}
