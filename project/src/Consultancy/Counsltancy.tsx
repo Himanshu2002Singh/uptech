@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Brain, Loader, CheckCircle } from 'lucide-react';
-import engineeringImage from '../../assets/trrrr.png'; // Update this path if needed
+import engineeringImage from '../../assets/trrrr.png';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../components/redux/store';
+import { submitConsultancyForm } from '../components/redux/slices/enrollSlice'; // ✅ Ensure path is correct
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const services = [
   'Industrial Automation Solution',
@@ -17,18 +23,39 @@ const services = [
 ];
 
 const FreeEngineeringConsultancy = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, success, error } = useSelector((state: RootState) => state.enroll);
+
   const [selectedService, setSelectedService] = useState('');
   const [problemStatement, setProblemStatement] = useState('');
   const [email, setEmail] = useState('');
   const [contact, setContact] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [aiResponse, setAiResponse] = useState('');
+
   const [typedText, setTypedText] = useState('');
   const fullText = 'Get expert help on engineering solutions tailored to your problem.';
   const typingIndex = useRef(0);
   const isDeleting = useRef(false);
 
-  // Typewriter Loop
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(submitConsultancyForm({ email, contact, selectedService, problemStatement }));
+  };
+
+  // Reset form after success
+  useEffect(() => {
+    if (success) {
+      toast.success('Successfully submitted! Our team will contact you.');
+      setEmail('');
+      setContact('');
+      setSelectedService('');
+      setProblemStatement('');
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [success, error]);
+
+  // Typewriter effect
   useEffect(() => {
     const typingInterval = setInterval(() => {
       if (!isDeleting.current) {
@@ -39,7 +66,7 @@ const FreeEngineeringConsultancy = () => {
           setTimeout(() => {
             typingIndex.current = 0;
             isDeleting.current = false;
-          }, 2500); // wait before restarting
+          }, 2500);
         }
       }
     }, 40);
@@ -47,23 +74,16 @@ const FreeEngineeringConsultancy = () => {
     return () => clearInterval(typingInterval);
   }, [typedText]);
 
-  const handleSubmit = async () => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    setAiResponse(`✅ AI Response generated for: ${selectedService}\n📝 Problem: ${problemStatement}`);
-    setIsLoading(false);
-  };
-
   return (
     <section className="py-20 bg-gradient-to-br from-gray-50 to-white overflow-hidden relative px-6 lg:px-20">
-      {/* Floating BG Effects */}
+      {/* Background Circles */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div className="absolute top-20 left-20 w-32 h-32 bg-blue-500 rounded-full animate-float-slow" />
         <div className="absolute bottom-20 right-20 w-24 h-24 bg-purple-500 rounded-full animate-float-delayed" />
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center shadow-lg p-8">
-        {/* Left: Text + Form */}
+        {/* Left Side */}
         <div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
@@ -83,95 +103,89 @@ const FreeEngineeringConsultancy = () => {
             {typedText}
           </motion.p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
-            <div>
-              <label className="block mb-1 font-medium">Email <span className="text-red-400">*</span></label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-red/20 text-black placeholder-gray-400"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 font-medium">Contact No.</label>
-              <input
-                type="text"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg bg-white/10 border border-red/20 text-black placeholder-gray-400"
-                placeholder="Enter contact number"
-              />
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <label className="block text-black mb-2 font-medium">Select Service <span className="text-red-400">*</span></label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {services.map((service) => (
-                <label key={service} className="flex items-center text-black bg-white/5 px-4 py-2 rounded-lg border border-red/20 hover:bg-white/10 cursor-pointer transition-all">
-                  <input
-                    type="radio"
-                    name="service"
-                    value={service}
-                    checked={selectedService === service}
-                    onChange={() => setSelectedService(service)}
-                    className="mr-3"
-                  />
-                  {service}
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <label className="block text-black mb-2 font-medium">Problem Statement</label>
-            <textarea
-              value={problemStatement}
-              onChange={(e) => setProblemStatement(e.target.value)}
-              rows={4}
-              className="w-full px-4 py-3 rounded-lg bg-white/10 border border-red/20 text-black placeholder-gray-400"
-              placeholder="Describe your engineering problem"
-            />
-          </div>
-
-          <div className="mt-8">
-            <button
-              onClick={handleSubmit}
-              disabled={isLoading || !email || !selectedService}
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-red-600 to-orange-500 text-white font-semibold hover:from-red-700 hover:to-orange-800 transition-all disabled:opacity-50"
-            >
-              {isLoading ? (
-                <div className="flex justify-center items-center space-x-2">
-                  <Loader className="w-5 h-5 animate-spin" />
-                  <span>Generating...</span>
-                </div>
-              ) : (
-                <div className="flex justify-center items-center space-x-2">
-                  <Brain className="w-5 h-5" />
-                  <span>Submit</span>
-                </div>
-              )}
-            </button>
-          </div>
-
-          {aiResponse && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-10 p-6 bg-white/10 text-black rounded-xl border border-white/20"
-            >
-              <div className="flex items-center space-x-2 mb-4">
-                <CheckCircle className="text-green-400" />
-                <h2 className="text-lg font-semibold">AI Analysis</h2>
+          <form onSubmit={handleSubmit}>
+            {/* Email and Contact */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-black">
+              <div>
+                <label className="block mb-1 font-medium">Email <span className="text-red-400">*</span></label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg bg-white border border-red-200 text-black placeholder-gray-400"
+                  placeholder="Enter your email"
+                  required
+                />
               </div>
-              <pre className="whitespace-pre-wrap text-gray-300">{aiResponse}</pre>
-            </motion.div>
-          )}
+              <div>
+                <label className="block mb-1 font-medium">Contact No.</label>
+                <input
+                  type="text"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg bg-white border border-red-200 text-black placeholder-gray-400"
+                  placeholder="Enter contact number"
+                />
+              </div>
+            </div>
+
+            {/* Service Selection */}
+            <div className="mt-6">
+              <label className="block text-black mb-2 font-medium">Select Service <span className="text-red-400">*</span></label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {services.map((service) => (
+                  <label key={service} className="flex items-center text-black bg-white px-4 py-2 rounded-lg border border-red-200 hover:bg-gray-50 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="service"
+                      value={service}
+                      checked={selectedService === service}
+                      onChange={() => setSelectedService(service)}
+                      className="mr-3"
+                      required
+                    />
+                    {service}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Problem Statement */}
+            <div className="mt-6">
+              <label className="block text-black mb-2 font-medium">Problem Statement</label>
+              <textarea
+                value={problemStatement}
+                onChange={(e) => setProblemStatement(e.target.value)}
+                rows={4}
+                className="w-full px-4 py-3 rounded-lg bg-white border border-red-200 text-black placeholder-gray-400"
+                placeholder="Describe your engineering problem"
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="mt-8">
+              <button
+                type="submit"
+                disabled={loading || !email || !selectedService}
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-red-600 to-orange-500 text-white font-semibold hover:from-red-700 hover:to-orange-700 transition-all disabled:opacity-50"
+              >
+                {loading ? (
+                  <div className="flex justify-center items-center space-x-2">
+                    <Loader className="w-5 h-5 animate-spin" />
+                    <span>Submitting...</span>
+                  </div>
+                ) : (
+                  <div className="flex justify-center items-center space-x-2">
+                    <Brain className="w-5 h-5" />
+                    <span>Submit</span>
+                  </div>
+                )}
+              </button>
+            </div>
+          </form>
         </div>
 
-        {/* Right: Image */}
+        {/* Right Side Image */}
         <motion.div
           initial={{ opacity: 0, x: 60 }}
           animate={{ opacity: 1, x: 0 }}

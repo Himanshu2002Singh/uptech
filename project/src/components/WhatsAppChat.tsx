@@ -9,7 +9,7 @@ const WhatsAppChat = () => {
 
   const handleSendMessage = () => {
     if (message.trim()) {
-      const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(message)}`;
+      const whatsappUrl = `https://wa.me/7303050391?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
       setMessage('');
       setIsOpen(false);
@@ -32,10 +32,10 @@ const WhatsAppChat = () => {
           <div className="bg-green-500 text-white p-4 rounded-t-lg flex items-center justify-between">
             <div className="flex items-center">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center mr-3">
-                <span className="text-green-500 font-bold text-sm">MS</span>
+                <span className="text-green-500 font-bold text-sm">Uptech </span>
               </div>
               <div>
-                <h4 className="font-semibold">Multisoft Systems</h4>
+                <h4 className="font-semibold">  Uptech Automations</h4>
                 <p className="text-xs opacity-90">Typically replies instantly</p>
               </div>
             </div>

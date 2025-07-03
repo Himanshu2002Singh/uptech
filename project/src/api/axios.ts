@@ -1,14 +1,23 @@
-// src/api/axios.js or axios.ts
+// src/api/axios.ts
 import axios from 'axios';
 
-// For Vite
+// Vite environment variable
 const baseURL = import.meta.env.VITE_API_BASE_URL;
-
-// For Create React App, use:
-// const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 const axiosInstance = axios.create({
   baseURL,
 });
+
+// Add token to every request if available
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export default axiosInstance;

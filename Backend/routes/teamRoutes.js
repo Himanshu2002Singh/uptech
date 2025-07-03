@@ -11,15 +11,15 @@ const { protect, admin } = require('../middleware/authMiddleware');
 
 // Public
 router.get('/get', getTeamMembers);
-router.get('/:id', getTeamMemberById);
+router.get('/:id', protect, admin, getTeamMemberById);
 
 // Admin-only protected
 // router.post('/', protect, admin, createTeamMember);
 // router.put('/:id', protect, admin, updateTeamMember);
 // router.delete('/:id', protect, admin, deleteTeamMember);
 
-router.post('/', createTeamMember);
-router.put('/:id',  updateTeamMember);
-router.delete('/:id', deleteTeamMember);
+router.post('/',  protect, admin,createTeamMember);
+router.put('/:id', protect, admin, updateTeamMember);
+router.delete('/:id', protect, admin, deleteTeamMember);
 
 module.exports = router;

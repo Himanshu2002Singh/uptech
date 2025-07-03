@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, ChevronRight, Book, Code, Cpu, Zap, Database, ArrowLeft, Star, Clock, Users } from 'lucide-react';
+import { Search, ChevronRight, Book, Code, Cpu, Zap, Database, ArrowLeft, Star, Clock, Users, X } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from '../components/redux/hooks';
+import { submitEnrollment, resetEnrollState } from '../components/redux/slices/enrollSlice'; // Import your Redux actions
 
 interface Course {
   id: string;
@@ -199,6 +201,17 @@ function Courses() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [showEnrollForm, setShowEnrollForm] = useState(false);
+  const [selectedStack, setSelectedStack] = useState<Stack | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
+  
+  const dispatch = useAppDispatch();
+  const enrollState = useAppSelector((state: any) => state.enroll);
+  
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -233,6 +246,49 @@ function Courses() {
       setSelectedCourse(null);
     }
   };
+
+  
+  const handleEnrollClick = (stack: Stack) => {
+    setSelectedStack(stack);
+    setShowEnrollForm(true);
+  };
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedStack && selectedTechnology) {
+      dispatch(submitEnrollment({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        course: {
+          name: selectedTechnology.name,
+          stack: selectedStack.name,
+          price: selectedStack.price,
+          duration: selectedStack.duration,
+          level: selectedStack.level
+        }
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (enrollState.success) {
+      setFormData({ name: '', email: '', phone: '' });
+      setTimeout(() => {
+        setShowEnrollForm(false);
+        dispatch(resetEnrollState());
+      }, 2000);
+    }
+  }, [enrollState.success, dispatch]);
+
 
   const getLevelColor = (level: string) => {
     switch (level) {
@@ -538,9 +594,12 @@ function Courses() {
                         <div className="text-lg font-bold text-red-600">{stack.price}</div>
                       </div>
                       
-                      <button className="w-full py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-lg text-white font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5">
-                        Enroll Now
-                      </button>
+                       <button 
+    onClick={() => handleEnrollClick(stack)}
+    className="w-full py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-lg text-white font-semibold transition-all duration-300 hover:shadow-lg transform hover:-translate-y-0.5"
+  >
+    Enroll Now
+  </button>
                     </div>
                   ))}
                 </div>
@@ -549,6 +608,100 @@ function Courses() {
           </div>
         </div>
       </div>
+
+   {showEnrollForm && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-xl max-w-md w-full p-6 relative transform transition-all duration-300 scale-95 animate-scaleIn">
+        <button 
+          onClick={() => {
+            setShowEnrollForm(false);
+            dispatch(resetEnrollState());
+          }}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        
+        <h3 className="text-2xl font-bold text-gray-900 mb-2">Enroll in {selectedStack?.name}</h3>
+        <p className="text-gray-600 mb-6">
+          {selectedTechnology?.name} - {selectedStack?.duration} • {selectedStack?.price}
+        </p>
+        
+        {enrollState.success ? (
+          <div className="text-center py-8">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <h4 className="text-xl font-bold text-gray-900 mb-2">Enrollment Successful!</h4>
+            <p className="text-gray-600">We've sent the details to your email.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleFormSubmit}>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleFormChange}
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                />
+              </div>
+              
+              {enrollState.error && (
+                <div className="text-red-500 text-sm">{enrollState.error}</div>
+              )}
+              
+              <button
+                type="submit"
+                disabled={enrollState.loading}
+                className="w-full py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 rounded-lg text-white font-semibold transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {enrollState.loading ? 'Processing...' : 'Complete Enrollment'}
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  )}
     </section>
   );
 }

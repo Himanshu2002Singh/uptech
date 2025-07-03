@@ -50,19 +50,19 @@ const ContactUs = () => {
                 <div className="flex items-center space-x-4">
                   <FaPhoneAlt className="w-5 h-5 text-white" />
                   <div>
-                    <p className="font-medium">+8801773777746</p>
-                    <p className="text-">+8801793924563</p>
+                    <p className="font-medium">+91 7303050391</p>
+                    <p className="text-">+91 7303050391</p>
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
                   <FaEnvelope className="w-5 h-5 text-white" />
-                  <p className="font-medium">Support@uprankly.com</p>
+                  <p className="font-medium">advisory@uptechautomation.com</p>
                 </div>
 
                 <div className="flex items-center space-x-4">
                   <FaGlobe className="w-5 h-5 text-white" />
-                  <p className="font-medium">New York, USA</p>
+                  <p className="font-medium">B-135 ,Sector 2 Noida, Uttar Pradesh </p>
                 </div>
               </div>
             </div>
@@ -88,7 +88,7 @@ const ContactUs = () => {
                   type="email"
                   id="email"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
-                  placeholder="hello@thenuency.com"
+                  placeholder="info@thenuency.com"
                 />
               </div>
             </div>

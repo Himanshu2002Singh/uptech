@@ -1,3 +1,4 @@
+// app.js
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -21,6 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/courses', require('./routes/courseRoutes'));
 app.use('/api/team', require('./routes/teamRoutes'));
 app.use('/api/testimonials', require('./routes/testimonialRoutes'));
+
+// Add this with your other route imports
+app.use('/api/mail', require('./routes/mailRoutes'));
 
 // Error handling middleware
 app.use(errorHandler);

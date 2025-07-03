@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './components/redux/store';
+import ProtectedRoute from './ProtectedRoute';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -23,6 +24,8 @@ import TeamPage from './components/Page/admin/TeamPage';
 import TeamEditForm from './components/Admin/TeamEditForm';
 import TestimonialForm from './components/Admin/TestimonialForm';
 import TestimonialList from './components/Admin/TestimonialList';
+import Login from './components/Page/admin/Login';
+import ForgotPassword from './components/Page/admin/ForgotPassword';
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('cs-it');
   
@@ -43,17 +46,19 @@ function App() {
           />
           <Route path="/contact" element={<ContactUs />} />
           <Route path='/cunsultancy' element={<FreeConsultancyPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path='/forgot-password' element={<ForgotPassword />} />
 
           {/* Admin Routes */}
-          <Route path="/admin/courses" element={<CoursesPage />} />
-          <Route path="/admin/courses/add" element={<CourseForm />} />
-          <Route path="/admin/team" element={<TeamPage />} />
-<Route path="/admin/team/create" element={<TeamForm />} />
-<Route path="/admin/team/edit/:id" element={<TeamEditForm />} />
-          <Route path="/admin/courses/edit/:id" element={<CourseForm />} />
-          <Route path="/admin/testimonials" element={<TestimonialList />} />
-<Route path="/admin/testimonials/add" element={<TestimonialForm />} />
-<Route path="/admin/testimonials/edit/:id" element={<TestimonialForm />} />
+          <Route path="/admin/courses" element={ <ProtectedRoute><CoursesPage /></ProtectedRoute>} />
+          <Route path="/admin/courses/add" element={<ProtectedRoute><CourseForm /></ProtectedRoute>} />
+          <Route path="/admin/team" element={<ProtectedRoute><TeamPage /></ProtectedRoute>} />
+<Route path="/admin/team/create" element={<ProtectedRoute><TeamForm /></ProtectedRoute>} />
+<Route path="/admin/team/edit/:id" element={<ProtectedRoute><TeamEditForm /></ProtectedRoute>} />
+          <Route path="/admin/courses/edit/:id" element={<ProtectedRoute><CourseForm /></ProtectedRoute>} />
+          <Route path="/admin/testimonials" element={<ProtectedRoute><TestimonialList /></ProtectedRoute>} />
+<Route path="/admin/testimonials/add" element={<ProtectedRoute><TestimonialForm /></ProtectedRoute>} />
+<Route path="/admin/testimonials/edit/:id" element={<ProtectedRoute><TestimonialForm /></ProtectedRoute>} />
         </Routes>
 
         <Footer />

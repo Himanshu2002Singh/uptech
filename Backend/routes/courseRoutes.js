@@ -14,13 +14,13 @@ router.get('/get', getCourses);
 router.get('/:id', getCourseById);
 
 // router.post('/', protect, admin, createCourse);
-router.post('/', createCourse);
+router.post('/', protect, admin, createCourse);
 
 // router.put('/:id', protect, admin, updateCourse);
-router.put('/:id', updateCourse);
+router.put('/:id', protect, admin, updateCourse);
 
 // router.delete('/:id', protect, admin, deleteCourse);
-router.delete('/:id', deleteCourse);
+router.delete('/:id', protect, admin, deleteCourse);
 
 
 // Protected routes (admin only)

@@ -31,10 +31,8 @@ const Footer: React.FC = () => {
           <h2 className="text-lg font-semibold text-white mb-4">Browse by Category</h2>
           <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-gray-300">
             {[
-              "Apps", "Business", "Entertainment", "Fashion", "Featured", "Food",
-              "Gadget", "Science", "Sports",
-              "Startup", "Tech", "Travel", "World",
-            ].map((item, index) => (
+              "CS-IT", "Electronics", "AI-ML", "Industry Automation","Other Courses","Engineering Consultancy", 
+                       ].map((item, index) => (
               <span key={index}>{item}</span>
             ))}
           </div>
@@ -67,7 +65,7 @@ const Footer: React.FC = () => {
         <p> Degine and Developement By <span className="text-red-600" >Trusting Brains</span></p>
         <div className="flex gap-4">
           <a href="#">About</a>
-          <a href="#">Advertise</a>
+          <a href="#">Courses</a>
           <a href="#">Privacy & Policy</a>
           <a href="#">Contact Us</a>
         </div>

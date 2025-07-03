@@ -1,33 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTestimonials } from "../components/redux/slices/testimonialSlice";
+import { RootState, AppDispatch } from "../components/redux/store";
 
-const testimonials = [
-  {
-    name: "Avinash Kr",
-    role: "Co-Founder at xyz",
-    image: "/assets/img/avinash.jpg",
-    quote:
-      "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
-  },
-  {
-    name: "Bharat Kunal",
-    role: "Manager at xyz",
-    image: "/assets/img/bharat.jpg",
-    quote:
-      "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
-  },
-  {
-    name: "Prabhakar D",
-    role: "Founder / CEO at xyz",
-    image: "/assets/img/prabhakar.jpg",
-    quote:
-      "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
-  },
-];
+// const testimonials = [
+//   {
+//     name: "Avinash Kr",
+//     role: "Co-Founder at xyz",
+//     image: "/assets/img/avinash.jpg",
+//     quote:
+//       "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
+//   },
+//   {
+//     name: "Bharat Kunal",
+//     role: "Manager at xyz",
+//     image: "/assets/img/bharat.jpg",
+//     quote:
+//       "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
+//   },
+//   {
+//     name: "Prabhakar D",
+//     role: "Founder / CEO at xyz",
+//     image: "/assets/img/prabhakar.jpg",
+//     quote:
+//       "Like this video and ask your questions in comment section, don't forget to Subscribe Easy Tutorials YouTube channel to watch more videos of website designing, digital marketing and photoshop.",
+//   },
+// ];
 
 const Testimonials: React.FC = () => {
+   const dispatch: AppDispatch = useDispatch();
+  const { testimonials, loading, error } = useSelector((state: RootState) => state.testimonial);
+
+  useEffect(() => {
+    dispatch(fetchTestimonials());
+  }, [dispatch]);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -68,9 +78,16 @@ const Testimonials: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto">
+         {loading ? (
+          <p>Loading testimonials...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : testimonials.length === 0 ? (
+          <p>No testimonials found.</p>
+        ) : (
         <Slider {...settings}>
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="px-4">
+             {testimonials.map((testimonial: any, index: number) => (
+              <div key={index} className="px-4">
               <div className="bg-gray-100 p-6 shadow-md relative pt-14 h-full rounded-2xl transform transition-transform duration-500 hover:scale-105">
                 <img
                   src={testimonial.image}
@@ -88,6 +105,7 @@ const Testimonials: React.FC = () => {
             </div>
           ))}
         </Slider>
+        )}
       </div>
     </section>
   );
