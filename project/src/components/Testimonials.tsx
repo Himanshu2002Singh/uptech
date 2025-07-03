@@ -86,7 +86,8 @@ const Testimonials: React.FC = () => {
           <p>No testimonials found.</p>
         ) : (
         <Slider {...settings}>
-             {testimonials.map((testimonial: any, index: number) => (
+            {Array.isArray(testimonials) && testimonials.length > 0 ? (
+  testimonials.map((testimonial: any, index: number) => (
               <div key={index} className="px-4">
               <div className="bg-gray-100 p-6 shadow-md relative pt-14 h-full rounded-2xl transform transition-transform duration-500 hover:scale-105">
                 <img
@@ -103,7 +104,10 @@ const Testimonials: React.FC = () => {
                 <p className="text-gray-500 text-sm">{testimonial.role}</p>
               </div>
             </div>
-          ))}
+          ))
+          ) : (
+  <p>No testimonials found.</p>
+)}
         </Slider>
         )}
       </div>
