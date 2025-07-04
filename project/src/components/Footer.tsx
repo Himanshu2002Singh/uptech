@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
 
       <div className="max-w-7xl mx-auto text-sm text-gray-500 flex flex-col md:flex-row justify-between gap-4">
         <p>© 2025 <span className="text-red-400 font-bold text-xl">Uptech Automation </span></p>
-        <p> Degine and Developement By <span className="text-red-600" >Trusting Brains</span></p>
+        <p> Design and Developement By <span className="text-red-600" >Trusting Brains</span></p>
         <div className="flex gap-4">
           <a href="#">About</a>
           <a href="#">Courses</a>
