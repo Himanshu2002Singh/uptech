@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 
 const AboutUs = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [counters, setCounters] = useState({
     students: 0,
     courses: 0,
