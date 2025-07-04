@@ -45,7 +45,7 @@ function App() {
             element={<Coursespage selectedCategory={selectedCategory} />}
           />
           <Route path="/contact" element={<ContactUs />} />
-          <Route path='/cunsultancy' element={<FreeConsultancyPage />} />
+          <Route path='/consultancy' element={<FreeConsultancyPage />} />
             <Route path="/login" element={<Login />} />
             <Route path='/forgot-password' element={<ForgotPassword />} />
 
