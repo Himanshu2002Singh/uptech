@@ -7,7 +7,7 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 // Load .env
 dotenv.config();
 
-// DB Connection (Sequelize)
+// DB Connection (Sequel
 require('./config/db');
 
 // Express init

@@ -5,13 +5,14 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const axiosInstance = axios.create({
   baseURL,
-  withCredentials: true, // Add this for cookies if needed
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
-// Request interceptor
+
+
+// Add token to every request if available
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -22,6 +23,7 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 
 // Response interceptor
 axiosInstance.interceptors.response.use(
