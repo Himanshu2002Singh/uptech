@@ -1,15 +1,24 @@
-// src/components/Auth/ProtectedRoute.tsx
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Navigate, Outlet } from 'react-router-dom';
+import { RootState } from './components/redux/store';
 
-interface Props {
-  children: JSX.Element;
+interface ProtectedRouteProps {
+  adminOnly?: boolean;
 }
 
-const ProtectedRoute: React.FC<Props> = ({ children }) => {
-  const token = localStorage.getItem('token');
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ adminOnly = false }) => {
+  const { userInfo } = useSelector((state: RootState) => state.auth);
 
-  return token ? children : <Navigate to="/login" replace />;
+  if (!userInfo) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (adminOnly && !userInfo.is_admin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;
