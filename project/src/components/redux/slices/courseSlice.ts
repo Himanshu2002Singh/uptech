@@ -37,7 +37,11 @@ export const deleteCourse = createAsyncThunk<string, string>('courses/delete', a
 
 
 export const createCourse = createAsyncThunk('courses/create', async (courseData) => {
-  const response = await axios.post('/api/courses', courseData);
+  const response = await axios.post('/api/courses', courseData,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
   return response.data;
 });
 

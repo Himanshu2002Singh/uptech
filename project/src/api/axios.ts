@@ -8,6 +8,8 @@ const axiosInstance = axios.create({
   baseURL,
 });
 
+
+
 // Add token to every request if available
 axiosInstance.interceptors.request.use(
   (config) => {
