@@ -1,13 +1,12 @@
-const pool = require('../config/db');
-const bcrypt = require('bcryptjs');
+const users = require('../models/user');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+  const result = await users.query('SELECT * FROM users WHERE email = $1', [email]);
   const user = result.rows[0];
-  if (user && bcrypt.compareSync(password, user.password)) {
+  if (user && password === user.password) {
     const token = jwt.sign({ id: user.id, is_admin: user.is_admin }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });

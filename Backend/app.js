@@ -23,6 +23,9 @@ app.use('/api/courses', require('./routes/courseRoutes'));
 app.use('/api/team', require('./routes/teamRoutes'));
 app.use('/api/testimonials', require('./routes/testimonialRoutes'));
 
+
+app.use('/api/auth', require('./routes/authRoutes'));
+
 // Add this with your other route imports
 app.use('/api/mail', require('./routes/mailRoutes'));
 
