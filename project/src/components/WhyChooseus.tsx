@@ -9,7 +9,7 @@ import Headphones from '../../assets/helpdesk (1).gif';
 import { ArrowRight } from 'lucide-react';
 
 const WhyChooseUs = () => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
