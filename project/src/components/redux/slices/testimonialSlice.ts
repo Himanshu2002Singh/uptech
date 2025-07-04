@@ -18,7 +18,11 @@ export const fetchTestimonialById = createAsyncThunk(
   'testimonial/fetchById',
   async (id: string, thunkAPI) => {
     try {
-      const { data } = await axios.get(`/api/testimonials/${id}`);
+      const { data } = await axios.get(`/api/testimonials/${id}`,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message || 'Fetch failed');
@@ -30,7 +34,11 @@ export const createTestimonial = createAsyncThunk(
   'testimonial/create',
   async (testimonial: any, thunkAPI) => {
     try {
-      const { data } = await axios.post('/api/testimonials', testimonial);
+      const { data } = await axios.post('/api/testimonials', testimonial,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message || 'Create failed');
@@ -42,7 +50,11 @@ export const updateTestimonial = createAsyncThunk(
   'testimonial/update',
   async ({ id, testimonialData }: { id: string, testimonialData: any }, thunkAPI) => {
     try {
-      const { data } = await axios.put(`/api/testimonials/${id}`, testimonialData);
+      const { data } = await axios.put(`/api/testimonials/${id}`, testimonialData,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message || 'Update failed');
@@ -54,7 +66,11 @@ export const deleteTestimonial = createAsyncThunk(
   'testimonial/delete',
   async (id: string, thunkAPI) => {
     try {
-      const { data } = await axios.delete(`/api/testimonials/${id}`);
+      const { data } = await axios.delete(`/api/testimonials/${id}`,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message || 'Delete failed');

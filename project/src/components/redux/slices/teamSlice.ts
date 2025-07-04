@@ -39,7 +39,11 @@ export const createTeamMember = createAsyncThunk(
   'team/createTeamMember',
   async (memberData: Omit<TeamMember, 'id'>, thunkAPI) => {
     try {
-      const res = await axios.post('/api/team', memberData);
+      const res = await axios.post('/api/team', memberData,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return res.data;
     } catch (err: unknown) {
       if (isAxiosError(err) && err.response) {
@@ -55,7 +59,11 @@ export const fetchTeamMemberById = createAsyncThunk(
   'team/fetchById',
   async (id: number, thunkAPI) => {
     try {
-      const res = await axios.get(`/api/team/${id}`);
+      const res = await axios.get(`/api/team/${id}`,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return res.data;
     } catch (err: unknown) {
       if (isAxiosError(err) && err.response) {
@@ -73,7 +81,11 @@ export const updateTeamMember = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const res = await axios.put(`/api/team/${id}`, updatedData);
+      const res = await axios.put(`/api/team/${id}`, updatedData,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return res.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data?.error || 'Failed to update team member');
@@ -87,7 +99,11 @@ export const deleteTeamMember = createAsyncThunk(
   'team/deleteTeamMember',
   async (id: number, thunkAPI) => {
     try {
-      await axios.delete(`/api/team/${id}`);
+      await axios.delete(`/api/team/${id}`,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
       return id;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data?.error || 'Failed to delete team member');

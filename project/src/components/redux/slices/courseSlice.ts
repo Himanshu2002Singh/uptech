@@ -30,7 +30,11 @@ export const getCourses = createAsyncThunk<Course[]>('courses/get', async () => 
 });
 
 export const deleteCourse = createAsyncThunk<string, string>('courses/delete', async (id) => {
-  await axios.delete(`/api/courses/${id}`);
+  await axios.delete(`/api/courses/${id}`,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
   return id;
 });
 
@@ -50,7 +54,11 @@ export const updateCourse = createAsyncThunk(
   async (
     { id, courseData }: { id: string; courseData: Partial<Course> }
   ) => {
-    const response = await axios.put(`/api/courses/${id}`, courseData);
+    const response = await axios.put(`/api/courses/${id}`, courseData,{
+  headers: {
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  }
+});
     return response.data;
   }
 );
