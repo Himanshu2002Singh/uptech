@@ -22,7 +22,7 @@ const TeamMember = sequelize.define('TeamMember', {
   tableName: 'team_members',
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: false })
   .then(() => console.log('✅ TeamMembers table synced'))
   .catch((err) => console.error('❌ Error syncing TeamMembers table:', err));
 

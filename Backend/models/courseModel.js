@@ -55,7 +55,7 @@ const Course = sequelize.define('Course', {
 });
 
 // 🟢 Sync on load
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: false })
   .then(() => console.log('✅ Course table synced'))
   .catch((err) => console.error('❌ Error syncing Course table:', err));
 

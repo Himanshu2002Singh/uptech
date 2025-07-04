@@ -38,7 +38,7 @@ const Mail = sequelize.define('Mail', {
   ]
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: false })
   .then(() => console.log('✅ male tables synced successfully'))
   .catch(err => console.error('❌ Error syncing tables:', err));
 

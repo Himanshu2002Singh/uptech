@@ -22,7 +22,7 @@ const Testimonial = sequelize.define('Testimonial', {
   tableName: 'testimonials',
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: false })
   .then(() => console.log('✅ Testimonials table synced'))
   .catch((err) => console.error('❌ Error syncing Testimonials table:', err));
 
