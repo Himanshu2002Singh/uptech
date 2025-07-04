@@ -33,7 +33,7 @@ const User = sequelize.define('User', {
 });
 
 
-sequelize.sync({ alter: true })
+sequelize.sync({ alter: false })
   .then(() => console.log('✅ user table synced'))
   .catch((err) => console.error('❌ Error syncing user table:', err));
 
