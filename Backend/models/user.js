@@ -15,9 +15,7 @@ const User = sequelize.define('User', {
 
   email: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
-    validate: { isEmail: true }
   },
 
   password: {
@@ -35,7 +33,7 @@ const User = sequelize.define('User', {
 });
 
 
-sequelize.sync({ alter: false })
+sequelize.sync({ alter: true })
   .then(() => console.log('✅ user table synced'))
   .catch((err) => console.error('❌ Error syncing user table:', err));
 
