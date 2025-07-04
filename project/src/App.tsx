@@ -51,6 +51,7 @@ function App() {
 
           {/* Admin Routes */}
           <Route path="/admin/courses" element={ <ProtectedRoute><CoursesPage /></ProtectedRoute>} />
+          <Route path='/dashboard' element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
           <Route path="/admin/courses/add" element={<ProtectedRoute><CourseForm /></ProtectedRoute>} />
           <Route path="/admin/team" element={<ProtectedRoute><TeamPage /></ProtectedRoute>} />
 <Route path="/admin/team/create" element={<ProtectedRoute><TeamForm /></ProtectedRoute>} />

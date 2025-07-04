@@ -14,8 +14,8 @@ const Sidebar = () => {
         <ul className="space-y-2">
           <li>
             <Link
-              to="/admin/dashboard"
-              className={`flex items-center p-2 rounded hover:bg-gray-700 ${location.pathname === '/admin/dashboard' ? 'bg-gray-700' : ''}`}
+              to="/dashboard"
+              className={`flex items-center p-2 rounded hover:bg-gray-700 ${location.pathname === '/dashboard' ? 'bg-gray-700' : ''}`}
             >
               <FaHome className="mr-2" /> Dashboard
             </Link>
