@@ -50,16 +50,18 @@ function App() {
             <Route path='/forgot-password' element={<ForgotPassword />} />
 
           {/* Admin Routes */}
-          <Route path="/admin/courses" element={ <ProtectedRoute><CoursesPage /></ProtectedRoute>} />
-          <Route path='/dashboard' element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
-          <Route path="/admin/courses/add" element={<ProtectedRoute><CourseForm /></ProtectedRoute>} />
-          <Route path="/admin/team" element={<ProtectedRoute><TeamPage /></ProtectedRoute>} />
-<Route path="/admin/team/create" element={<ProtectedRoute><TeamForm /></ProtectedRoute>} />
-<Route path="/admin/team/edit/:id" element={<ProtectedRoute><TeamEditForm /></ProtectedRoute>} />
-          <Route path="/admin/courses/edit/:id" element={<ProtectedRoute><CourseForm /></ProtectedRoute>} />
-          <Route path="/admin/testimonials" element={<ProtectedRoute><TestimonialList /></ProtectedRoute>} />
-<Route path="/admin/testimonials/add" element={<ProtectedRoute><TestimonialForm /></ProtectedRoute>} />
-<Route path="/admin/testimonials/edit/:id" element={<ProtectedRoute><TestimonialForm /></ProtectedRoute>} />
+           <Route element={<ProtectedRoute adminOnly />}>
+          <Route path="/admin/courses" element={ <CoursesPage />} />
+          <Route path='/dashboard' element={<CoursesPage />} />
+          <Route path="/admin/courses/add" element={<CourseForm />} />
+          <Route path="/admin/team" element={<TeamPage />} />
+<Route path="/admin/team/create" element={<TeamForm />} />
+<Route path="/admin/team/edit/:id" element={<TeamEditForm />} />
+          <Route path="/admin/courses/edit/:id" element={<CourseForm />} />
+          <Route path="/admin/testimonials" element={<TestimonialList />} />
+<Route path="/admin/testimonials/add" element={<TestimonialForm />} />
+<Route path="/admin/testimonials/edit/:id" element={<TestimonialForm />} />
+</Route>
         </Routes>
 
         <Footer />
