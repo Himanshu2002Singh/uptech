@@ -8,6 +8,10 @@ interface HeaderProps {
   setSelectedCategory: (category: string) => void;
 }
 
+interface HeaderProps {
+  setSelectedCategory: (category: string) => void;
+}
+
 const Header = ({ setSelectedCategory }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
@@ -34,27 +38,39 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleCourses = () => setIsCoursesOpen(!isCoursesOpen);
 
-  type CategoryKey = 'CS-IT' | 'Electronics' | 'Machine Design' | 'Other';
 
+ 
   const handleCategorySelect = (category: string, courseId?: number) => {
-    const categoryMap: Record<CategoryKey, string> = {
+    const categoryMap: Record<string, string> = {
       'CS-IT': 'cs-it',
       'Electronics': 'electronics',
       'Machine Design': 'machine-design',
       'Other': 'other'
     };
 
-    const mappedCategory = (categoryMap as Record<string, string>)[category] || 'cs-it';
+    const mappedCategory = categoryMap[category] || 'cs-it';
     setSelectedCategory(mappedCategory);
     setIsMenuOpen(false);
     setIsCoursesOpen(false);
 
     if (courseId) {
       navigate(`/courses#course-${courseId}`);
+      // Scroll to course after navigation
+      setTimeout(() => {
+        const element = document.getElementById(`course-${courseId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     } else {
       navigate('/courses');
     }
   };
+  // const handleSearch = () => {
+  //   if (searchQuery.trim()) {
+  //     navigate(`/courses?search=${encodeURIComponent(searchQuery)}`);
+  //   }
+  // };
 
   return (
     <header className="bg-white shadow-sm relative z-50">
@@ -75,7 +91,7 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               />
               <button className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                <Search className="h-5 w-5 text-gray-400" />
+                <Search className="h-5 w-5 text-gray-400"  />
               </button>
             </div>
           </div>
@@ -157,32 +173,33 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
                 About Us
               </Link>
 
-              <div className="relative" ref={mobileCoursesRef}>
-                <button
-                  onClick={toggleCourses}
-                  className="flex items-center justify-between w-full px-3 py-2 rounded-md hover:bg-gray-50 text-gray-700 hover:text-red-600 font-medium"
-                >
-                  <div className="flex items-center">
-                    <Grid3X3 className="h-4 w-4 mr-2" />
-                    <span>Courses</span>
-                  </div>
-                  <ChevronDown className={`h-4 w-4 transition-transform ${isCoursesOpen ? 'rotate-180' : ''}`} />
-                </button>
+                 <div className="relative" ref={mobileCoursesRef}>
+              <button
+                onClick={toggleCourses}
+                className="flex items-center justify-between w-full px-3 py-2 rounded-md hover:bg-gray-50 text-gray-700 hover:text-red-600 font-medium"
+              >
+                <div className="flex items-center">
+                  <Grid3X3 className="h-4 w-4 mr-2" />
+                  <span>Courses</span>
+                </div>
+                <ChevronDown className={`h-4 w-4 transition-transform ${isCoursesOpen ? 'rotate-180' : ''}`} />
+              </button>
 
-                {/* Mobile Courses Dropdown - Same as desktop but responsive */}
-                {isCoursesOpen && (
-                  <div className="mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                    <div className="p-4">
-                      <CoursesDropdown
-                        isOpen={isCoursesOpen}
-                        onClose={() => setIsCoursesOpen(false)}
-                        onCategorySelect={handleCategorySelect}
-                        mobileView={true}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
+              {/* Mobile Courses Dropdown */}
+              {isCoursesOpen && (
+                <div className="mt-2">
+                  <CoursesDropdown
+                    isOpen={isCoursesOpen}
+                    onClose={() => {
+                      setIsCoursesOpen(false);
+                      setIsMenuOpen(false);
+                    }}
+                    onCategorySelect={handleCategorySelect}
+                    mobileView={true}
+                  />
+                </div>
+              )}
+            </div>
 
               <Link 
                 to="/consultancy" 

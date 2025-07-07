@@ -56,7 +56,6 @@ const CoursesDropdown: React.FC<CoursesDropdownProps> = ({
     } else {
       onCategorySelect(category);
     }
-    onClose();
   };
 
   // Filter courses by categories from backend
