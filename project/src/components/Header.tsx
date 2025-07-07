@@ -190,10 +190,11 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
                 <div className="mt-2">
                   <CoursesDropdown
                     isOpen={isCoursesOpen}
-                    onClose={() => {
-                      setIsCoursesOpen(false);
-                      setIsMenuOpen(false);
-                    }}
+                    // onClose={() => {
+                    //   // setIsCoursesOpen(false);
+                    //   setIsMenuOpen(false);
+                    // }}
+                       onClose={() => setIsCoursesOpen(false)}
                     onCategorySelect={handleCategorySelect}
                     mobileView={true}
                   />
