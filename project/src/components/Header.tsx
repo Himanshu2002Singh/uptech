@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, Menu, X, Grid3X3, ChevronDown, ChevronRight } from 'lucide-react';
+import { Search, Menu, X, Grid3X3, ChevronDown } from 'lucide-react';
 import CoursesDropdown from './CoursesDropdown';
 import logo from '../../assets/uptech.png';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,11 +14,15 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const coursesRef = useRef<HTMLDivElement>(null);
+  const mobileCoursesRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (coursesRef.current && !coursesRef.current.contains(event.target as Node)) {
+        setIsCoursesOpen(false);
+      }
+      if (mobileCoursesRef.current && !mobileCoursesRef.current.contains(event.target as Node)) {
         setIsCoursesOpen(false);
       }
     };
@@ -51,14 +55,6 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
       navigate('/courses');
     }
   };
-
-  // Mobile course categories
-  const mobileCategories = [
-    { name: 'CS-IT', icon: '💻' },
-    { name: 'Electronics', icon: '🔌' },
-    { name: 'Machine Design', icon: '⚙️' },
-    { name: 'Other', icon: '📚' }
-  ];
 
   return (
     <header className="bg-white shadow-sm relative z-50">
@@ -161,7 +157,7 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
                 About Us
               </Link>
 
-              <div className="relative">
+              <div className="relative" ref={mobileCoursesRef}>
                 <button
                   onClick={toggleCourses}
                   className="flex items-center justify-between w-full px-3 py-2 rounded-md hover:bg-gray-50 text-gray-700 hover:text-red-600 font-medium"
@@ -173,20 +169,17 @@ const Header = ({ setSelectedCategory }: HeaderProps) => {
                   <ChevronDown className={`h-4 w-4 transition-transform ${isCoursesOpen ? 'rotate-180' : ''}`} />
                 </button>
 
-                {/* Mobile Courses Dropdown */}
+                {/* Mobile Courses Dropdown - Same as desktop but responsive */}
                 {isCoursesOpen && (
-                  <div className="ml-6 mt-1 space-y-1 bg-gray-50 rounded-lg p-2 animate-fadeIn">
-                    {mobileCategories.map((category) => (
-                      <button
-                        key={category.name}
-                        onClick={() => handleCategorySelect(category.name)}
-                        className="flex items-center w-full px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700 hover:text-red-600 transition-colors"
-                      >
-                        <span className="mr-2">{category.icon}</span>
-                        <span>{category.name === 'Electronics' ? 'Electronics & Automation' : category.name}</span>
-                        <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
-                      </button>
-                    ))}
+                  <div className="mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                    <div className="p-4">
+                      <CoursesDropdown
+                        isOpen={isCoursesOpen}
+                        onClose={() => setIsCoursesOpen(false)}
+                        onCategorySelect={handleCategorySelect}
+                        mobileView={true}
+                      />
+                    </div>
                   </div>
                 )}
               </div>
