@@ -12,6 +12,17 @@ export default {
         'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
       keyframes: {
+        zoomTyping: {
+          '0%': { transform: 'scale(0.1)', width: '0ch', opacity: '0' },
+          '20%': { width: '5ch', opacity: '1' },
+          '40%': { width: '10ch' },
+          '60%': { width: '15ch' },
+          '80%': { width: '18ch' },
+          '100%': { transform: 'scale(5)', width: '0ch', opacity: '0', borderColor: 'transparent' },
+        },
+      
+      
+
         'slide-in-from-bottom': {
           '0%': {
             transform: 'translateY(100%)',
@@ -38,6 +49,9 @@ export default {
             transform: 'translateY(10px) rotate(-5deg)',
           },
         },
+      },
+      animation: {
+        zoomTyping: 'zoomTyping 3.5s ease forwards',
       },
     },
   },

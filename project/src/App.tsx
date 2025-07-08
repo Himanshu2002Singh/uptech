@@ -26,11 +26,14 @@ import TestimonialForm from './components/Admin/TestimonialForm';
 import TestimonialList from './components/Admin/TestimonialList';
 import Login from './components/Page/admin/Login';
 import ForgotPassword from './components/Page/admin/ForgotPassword';
+import ZoomLoader from './ZoomLoader';
 function App() {
   const [selectedCategory, setSelectedCategory] = useState('cs-it');
   
 
   return (
+    <>
+    <ZoomLoader/>
     <Provider store={store}>
       <div className="min-h-screen bg-gray-50">
         {/* Header with category setter */}
@@ -68,6 +71,7 @@ function App() {
         <WhatsAppChat />
       </div>
     </Provider>
+    </>
   );
 }
 
