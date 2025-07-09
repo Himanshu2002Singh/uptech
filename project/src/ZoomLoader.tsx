@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import logo from '../assets/logo.jpg'; // Apni image ka path yahan set karein
 
 const ZoomLoader: React.FC = () => {
   const [visible, setVisible] = useState(true);
@@ -6,7 +7,7 @@ const ZoomLoader: React.FC = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setVisible(false);
-    }, 3500); // 3.5 seconds animation
+    }, 3500); // animation duration
 
     return () => clearTimeout(timeout);
   }, []);
@@ -15,9 +16,11 @@ const ZoomLoader: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black">
-      <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-green-400 bg-clip-text text-transparent animate-zoomTyping whitespace-nowrap overflow-hidden border-r-2 border-white">
-        UptechAutomation
-      </h1>
+      <img
+        src={logo}
+        alt="UptechAutomation Logo"
+        className="w-32 h-32 animate-zoomOutward"
+      />
     </div>
   );
 };

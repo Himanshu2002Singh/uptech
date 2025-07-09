@@ -10,7 +10,10 @@ export default {
         'float-delayed': 'float 6s ease-in-out infinite 2s',
         'float-reverse': 'float-reverse 6s ease-in-out infinite',
         'ping': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+        zoomTyping: 'zoomTyping 3.5s ease forwards',
+        zoomOutward: 'zoomOutward 3.5s ease-in-out forwards', // ✅ New animation added here
       },
+
       keyframes: {
         zoomTyping: {
           '0%': { transform: 'scale(0.1)', width: '0ch', opacity: '0' },
@@ -20,9 +23,6 @@ export default {
           '80%': { width: '18ch' },
           '100%': { transform: 'scale(5)', width: '0ch', opacity: '0', borderColor: 'transparent' },
         },
-      
-      
-
         'slide-in-from-bottom': {
           '0%': {
             transform: 'translateY(100%)',
@@ -33,7 +33,7 @@ export default {
             opacity: '1',
           },
         },
-        'float': {
+        float: {
           '0%, 100%': {
             transform: 'translateY(0px) rotate(0deg)',
           },
@@ -49,9 +49,13 @@ export default {
             transform: 'translateY(10px) rotate(-5deg)',
           },
         },
-      },
-      animation: {
-        zoomTyping: 'zoomTyping 3.5s ease forwards',
+
+        // ✅ New keyframe for logo zoom
+        zoomOutward: {
+          '0%': { transform: 'scale(0.5)', opacity: '0' },
+          '50%': { opacity: '1' },
+          '100%': { transform: 'scale(1.8)', opacity: '0' },
+        },
       },
     },
   },
