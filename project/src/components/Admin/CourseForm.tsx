@@ -14,6 +14,7 @@ interface CourseFormData {
   students: number;
   rating: number;
   image: string;
+  downloadlink: string;
   price: string;
   category: string;
   syllabus: string[];
@@ -31,6 +32,7 @@ const CourseForm = () => {
     students: 0,
     rating: 0,
     image: '',
+    downloadlink:'',
     price: '',
     category: '',
     syllabus: [],
@@ -68,6 +70,7 @@ useEffect(() => {
       students: selectedCourse.students || 0,
       rating: selectedCourse.rating || 0,
       image: selectedCourse.image || '',
+      downloadlink: selectedCourse.downloadlink||'',
       price: selectedCourse.price || '',
       category: selectedCourse.category || '',
       syllabus: Array.isArray(selectedCourse.syllabus) ? selectedCourse.syllabus : [],
@@ -267,6 +270,7 @@ useEffect(() => {
                   required
                 />
               </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700">Category</label>
                 <input
@@ -280,6 +284,18 @@ useEffect(() => {
               </div>
             </div>
           </div>
+
+          <div>
+                <label className="block text-sm font-medium text-gray-700">download URL</label>
+                <input
+                  type="text"
+                  name="downloadlink"
+                  value={formData.downloadlink}
+                  onChange={handleChange}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  required
+                />
+              </div>
 
           {/* Syllabus */}
           <div className="mt-6">

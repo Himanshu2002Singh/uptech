@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Download,
   MessageCircle,
@@ -10,7 +10,10 @@ import {
   BookOpen,
   Award,
   Target,
-} from 'lucide-react';
+  X,
+} from "lucide-react";
+  import axios from "axios";  // 👈 add this at top
+
 
 interface DetailedCourseCardProps {
   id: number;
@@ -26,6 +29,7 @@ interface DetailedCourseCardProps {
   what_you_learn: string[] | string;
   prerequisites: string[] | string;
   certification: string;
+  syllabusLink: string; // Google Drive PDF link
 }
 
 const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
@@ -42,17 +46,28 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
   what_you_learn,
   prerequisites,
   certification,
+  syllabusLink,
 }) => {
   const [showFullSyllabus, setShowFullSyllabus] = useState(false);
   const [showWhatYouLearn, setShowWhatYouLearn] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [downloadAfterSubmit, setDownloadAfterSubmit] = useState(false);
 
-  // Helper to parse JSON string if needed
+  // Form state
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    subject: "",
+    message: "",
+  });
+
   const parseArray = (input: string[] | string): string[] => {
     try {
       if (Array.isArray(input)) return input;
-      if (typeof input === 'string') return JSON.parse(input);
+      if (typeof input === "string") return JSON.parse(input);
     } catch (e) {
-      console.error('Error parsing JSON array:', input, e);
+      console.error("Error parsing JSON array:", input, e);
     }
     return [];
   };
@@ -60,6 +75,33 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
   const safeSyllabus = parseArray(syllabus);
   const safeWhatYouLearn = parseArray(what_you_learn);
   const safePrerequisites = parseArray(prerequisites);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+
+
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post("/api/mail/send-consultancy-email", formData);
+
+      alert(res.data?.message || "Inquiry submitted successfully!");
+
+      setShowForm(false);
+
+      if (downloadAfterSubmit && syllabusLink) {
+        window.open(syllabusLink, "_blank");
+      }
+    } catch (error: any) {
+      alert(error.response?.data?.message || "Error submitting inquiry.");
+      console.error(error);
+    }
+  };
+
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
@@ -188,11 +230,23 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-              <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2">
+              <button
+                onClick={() => {
+                  setDownloadAfterSubmit(false);
+                  setShowForm(true);
+                }}
+                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2"
+              >
                 <MessageCircle className="h-5 w-5" />
                 <span>Send Inquiry</span>
               </button>
-              <button className="flex-1 bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2">
+              <button
+                onClick={() => {
+                  setDownloadAfterSubmit(true);
+                  setShowForm(true);
+                }}
+                className="flex-1 bg-slate-700 hover:bg-slate-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2"
+              >
                 <Download className="h-5 w-5" />
                 <span>Download Syllabus</span>
               </button>
@@ -200,6 +254,74 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Inquiry Form Modal */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg relative">
+            <button
+              onClick={() => setShowForm(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <h2 className="text-xl font-bold mb-4">Send Inquiry</h2>
+            <form onSubmit={handleFormSubmit} className="space-y-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                className="w-full border rounded-lg px-4 py-2"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                className="w-full border rounded-lg px-4 py-2"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="mobile"
+                placeholder="Mobile Number"
+                className="w-full border rounded-lg px-4 py-2"
+                value={formData.mobile}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="subject"
+                placeholder="Subject"
+                className="w-full border rounded-lg px-4 py-2"
+                value={formData.subject}
+                onChange={handleInputChange}
+                required
+              />
+              <textarea
+                name="message"
+                placeholder="Message"
+                className="w-full border rounded-lg px-4 py-2"
+                rows={3}
+                value={formData.message}
+                onChange={handleInputChange}
+                required
+              />
+              <button
+                type="submit"
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
+              >
+                Submit Inquiry
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
