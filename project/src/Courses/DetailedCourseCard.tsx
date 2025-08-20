@@ -48,7 +48,7 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
   what_you_learn,
   prerequisites,
   certification,
-  syllabusLink,
+  
 }) => {
   const [showFullSyllabus, setShowFullSyllabus] = useState(false);
   const [showWhatYouLearn, setShowWhatYouLearn] = useState(false);
@@ -95,9 +95,9 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
 
       setShowForm(false);
 
-      if (downloadAfterSubmit && syllabusLink) {
-        window.open(syllabusLink, "_blank");
-      }
+       if (downloadAfterSubmit && downloadlink) {
+      window.open(downloadlink, "_blank");
+    }
     } catch (error: any) {
       alert(error.response?.data?.message || "Error submitting inquiry.");
       console.error(error);
