@@ -24,6 +24,7 @@ interface DetailedCourseCardProps {
   students: number;
   rating: number;
   image: string;
+  downloadlink:string;
   price: string;
   syllabus: string[] | string;
   what_you_learn: string[] | string;
@@ -41,6 +42,7 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
   students,
   rating,
   image,
+  downloadlink,
   price,
   syllabus,
   what_you_learn,
@@ -87,7 +89,7 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
     e.preventDefault();
 
     try {
-      const res = await axios.post("/api/mail/send-consultancy-email", formData);
+      const res = await axios.post("https://api.uptechautomations.com/api/mail/mail/send-course-inquiry", formData);
 
       alert(res.data?.message || "Inquiry submitted successfully!");
 
@@ -108,7 +110,7 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
       <div id={`course-${id}`} className="md:flex">
         {/* Course Image */}
         <div className="md:w-1/3">
-          <img src={image} alt={title} className="w-full h-64 md:h-full object-cover" />
+          <img src={image} alt={title} className="w-full h-64 object-cover" />
         </div>
 
         {/* Course Content */}

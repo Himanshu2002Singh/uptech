@@ -72,10 +72,47 @@ const sendConsultancyMail = async (req, res) => {
   }
 };
 
+/* -----------------------------
+   NEW: Send Course Inquiry Mail
+----------------------------- */
+const sendCourseInquiryMail = async (req, res) => {
+  const { name, email, mobile, subject, message } = req.body;
 
+  if (!name || !email || !mobile || !subject || !message) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  const html = `
+    <h2>New Course Inquiry</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Mobile:</strong> ${mobile}</p>
+    <p><strong>Subject:</strong> ${subject}</p>
+    <p><strong>Message:</strong><br/>${message}</p>
+  `;
+
+  try {
+    // Send to admin
+    await sendEmail(process.env.ADMIN_EMAIL, `Course Inquiry - ${subject}`, html);
+
+    // Confirmation mail to user
+    const userMail = `
+      <h2>Hi ${name},</h2>
+      <p>Thank you for your inquiry regarding <strong>${subject}</strong>.</p>
+      <p>Our team will get back to you shortly.</p>
+    `;
+    await sendEmail(email, `We received your inquiry - ${subject}`, userMail);
+
+    res.status(200).json({ message: 'Inquiry submitted successfully' });
+  } catch (error) {
+    console.error('Email send error:', error);
+    res.status(500).json({ message: 'Failed to send inquiry' });
+  }
+};
 
 module.exports = {
   sendEnrollmentEmail,
   getMailLogs,
-  sendConsultancyMail
+  sendConsultancyMail,
+  sendCourseInquiryMail   // 👈 new export
 };

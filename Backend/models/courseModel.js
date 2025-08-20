@@ -29,6 +29,9 @@ const Course = sequelize.define('Course', {
   image: {
     type: DataTypes.STRING,
   },
+  downloadlink:{
+    type: DataTypes.STRING,
+  },
   price: {
     type: DataTypes.STRING,
     allowNull: false,
