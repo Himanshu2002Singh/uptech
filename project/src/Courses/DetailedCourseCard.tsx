@@ -89,7 +89,7 @@ const DetailedCourseCard: React.FC<DetailedCourseCardProps> = ({
     e.preventDefault();
 
     try {
-      const res = await axios.post("https://api.uptechautomations.com/api/mail/mail/send-course-inquiry", formData);
+      const res = await axios.post("https://api.uptechautomations.com/api/mail/send-course-inquiry", formData);
 
       alert(res.data?.message || "Inquiry submitted successfully!");
 
